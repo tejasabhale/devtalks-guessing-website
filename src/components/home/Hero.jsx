@@ -3,11 +3,16 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { useGame } from '../../context/GameContext'
 import { CASE_FILE } from '../../data/speakers'
+import { useDocumentVisible } from '../../hooks/useDocumentVisible'
+import { useFinePointer } from '../../hooks/useFinePointer'
 
 export default function Hero() {
   const navigate = useNavigate()
   const { openNameEntry } = useGame()
   const frameRef = useRef(null)
+  const rectRef = useRef(null)
+  const finePointer = useFinePointer()
+  const tabVisible = useDocumentVisible()
   const mx = useMotionValue(0)
   const my = useMotionValue(0)
   const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), {
@@ -19,10 +24,16 @@ export default function Hero() {
     damping: 18,
   })
 
-  const onMove = (e) => {
+  const cacheRect = () => {
     const el = frameRef.current
     if (!el) return
-    const rect = el.getBoundingClientRect()
+    rectRef.current = el.getBoundingClientRect()
+  }
+
+  const onMove = (e) => {
+    if (!finePointer) return
+    const rect = rectRef.current
+    if (!rect) return
     mx.set((e.clientX - rect.left) / rect.width - 0.5)
     my.set((e.clientY - rect.top) / rect.height - 0.5)
   }
@@ -94,17 +105,22 @@ export default function Hero() {
 
         <motion.div
           ref={frameRef}
-          onMouseMove={onMove}
-          onMouseLeave={onLeave}
+          onMouseEnter={finePointer ? cacheRect : undefined}
+          onMouseMove={finePointer ? onMove : undefined}
+          onMouseLeave={finePointer ? onLeave : undefined}
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          style={{ perspective: 1200 }}
+          style={finePointer ? { perspective: 1200 } : undefined}
           className="relative mx-auto w-full max-w-md lg:max-w-none"
         >
           <motion.div
-            style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-            className="card-3d relative overflow-hidden rounded-sm border border-red/50 bg-card red-glow"
+            style={
+              finePointer
+                ? { rotateX, rotateY, transformStyle: 'preserve-3d' }
+                : undefined
+            }
+            className="card-3d relative overflow-hidden rounded-sm border border-red/50 bg-card red-glow contain-paint"
           >
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
               <span className="text-label text-red">{CASE_FILE}</span>
@@ -113,13 +129,21 @@ export default function Hero() {
 
             <div className="relative aspect-[4/5] bg-black">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(229,9,20,0.15),transparent_65%)]" />
-              <div className="absolute inset-0 scanlines opacity-50" />
+              <div className="absolute inset-0 scanlines opacity-40 md:opacity-50" />
               <div className="animate-scan absolute inset-x-0 h-20 bg-gradient-to-b from-transparent via-red/30 to-transparent" />
 
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <motion.span
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 3, repeat: Infinity }}
+                  animate={
+                    tabVisible
+                      ? { opacity: [0.6, 1, 0.6] }
+                      : { opacity: 0.8 }
+                  }
+                  transition={
+                    tabVisible
+                      ? { duration: 3, repeat: Infinity }
+                      : { duration: 0.2 }
+                  }
                   className="font-display text-7xl font-bold text-red md:text-8xl"
                 >
                   ?
@@ -130,10 +154,10 @@ export default function Hero() {
                 </p>
               </div>
 
-              <div className="absolute left-3 top-3 rounded-sm border border-red/40 bg-bg-primary/70 px-2 py-1 text-[10px] tracking-widest text-red uppercase">
+              <div className="absolute left-3 top-3 rounded-sm border border-red/40 bg-bg-primary/90 px-2 py-1 text-[10px] tracking-widest text-red uppercase">
                 EVIDENCE TAG
               </div>
-              <div className="absolute bottom-3 right-3 rounded-sm border border-border bg-bg-primary/70 px-2 py-1 text-[10px] tracking-widest text-muted uppercase">
+              <div className="absolute bottom-3 right-3 rounded-sm border border-border bg-bg-primary/90 px-2 py-1 text-[10px] tracking-widest text-muted uppercase">
                 REVEAL 0%
               </div>
             </div>
@@ -146,16 +170,28 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            animate={
+              tabVisible ? { y: [0, -8, 0] } : { y: 0 }
+            }
+            transition={
+              tabVisible
+                ? { duration: 5, repeat: Infinity, ease: 'easeInOut' }
+                : { duration: 0.2 }
+            }
             className="absolute -left-4 top-16 hidden rounded-sm border border-border bg-card/90 px-3 py-2 text-label text-muted shadow-xl md:block"
             style={{ transform: 'rotate(-6deg)' }}
           >
             EVIDENCE
           </motion.div>
           <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+            animate={
+              tabVisible ? { y: [0, 6, 0] } : { y: 0 }
+            }
+            transition={
+              tabVisible
+                ? { duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }
+                : { duration: 0.2 }
+            }
             className="absolute -right-3 bottom-24 hidden rounded-sm border border-red/30 bg-bg-secondary px-3 py-2 text-label text-red shadow-xl md:block"
             style={{ transform: 'rotate(5deg)' }}
           >

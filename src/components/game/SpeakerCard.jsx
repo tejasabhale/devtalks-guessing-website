@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useFinePointer } from '../../hooks/useFinePointer'
 
 export default function SpeakerCard({
   speaker,
@@ -6,6 +7,7 @@ export default function SpeakerCard({
   onSelect,
   revealPercent = 40,
 }) {
+  const finePointer = useFinePointer()
   const panels = 5
   const openPanels = Math.round(revealPercent / 20)
 
@@ -13,7 +15,7 @@ export default function SpeakerCard({
     <motion.button
       type="button"
       onClick={onSelect}
-      whileHover={{ y: -6, scale: 1.02 }}
+      whileHover={finePointer ? { y: -6, scale: 1.02 } : undefined}
       whileTap={{ y: 0, scale: 0.99 }}
       aria-pressed={selected}
       className={`card-3d group w-full overflow-hidden rounded-sm border text-left transition-colors ${
@@ -28,6 +30,7 @@ export default function SpeakerCard({
           alt={`Candidate: ${speaker.name}`}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
+          decoding="async"
         />
         <div className="absolute inset-0 flex flex-col">
           {Array.from({ length: panels }).map((_, i) => (

@@ -4,6 +4,7 @@ import { HiCheckCircle, HiExclamationCircle } from 'react-icons/hi'
 import { useGame } from '../../context/GameContext'
 import AnswerButton from '../ui/AnswerButton'
 import { playCorrect, playIncorrect, playRevealTick } from '../../utils/sounds'
+import { useIsNarrow } from '../../hooks/useFinePointer'
 
 export default function ClueCard() {
   const {
@@ -15,6 +16,7 @@ export default function ClueCard() {
     lockedClue,
     advanceClue,
   } = useGame()
+  const narrow = useIsNarrow()
 
   const lastFeedback = useRef(null)
 
@@ -37,16 +39,26 @@ export default function ClueCard() {
   const clue = speaker.clues[currentClueIndex]
   if (!clue) return null
 
+  const enter = narrow
+    ? { opacity: 0, x: 20 }
+    : { opacity: 0, x: 24, rotateY: -6, scale: 0.98 }
+  const center = narrow
+    ? { opacity: 1, x: 0 }
+    : { opacity: 1, x: 0, rotateY: 0, scale: 1 }
+  const leave = narrow
+    ? { opacity: 0, x: -20 }
+    : { opacity: 0, x: -24, rotateY: 6, scale: 0.98 }
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={clue.id}
-        initial={{ opacity: 0, x: 24, rotateY: -6, scale: 0.98 }}
-        animate={{ opacity: 1, x: 0, rotateY: 0, scale: 1 }}
-        exit={{ opacity: 0, x: -24, rotateY: 6, scale: 0.98 }}
+        initial={enter}
+        animate={center}
+        exit={leave}
         transition={{ duration: 0.35, ease: 'easeOut' }}
         className="card-3d rounded-sm border border-border bg-card p-5 md:p-6"
-        style={{ transformStyle: 'preserve-3d' }}
+        style={narrow ? undefined : { transformStyle: 'preserve-3d' }}
       >
         <div className="mb-4 flex items-center justify-between gap-3">
           <p className="text-label text-red">{clue.evidenceLabel}</p>

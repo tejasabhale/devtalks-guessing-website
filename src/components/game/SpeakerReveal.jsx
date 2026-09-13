@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { CASE_ID } from '../../data/speakers'
 import { useGame } from '../../context/GameContext'
+import { useFinePointer, useIsNarrow } from '../../hooks/useFinePointer'
 
 const PANELS = 5
 
@@ -16,12 +17,18 @@ function openCount(percent, fullyRevealed) {
 
 export default function SpeakerReveal({ forceFull = false, className = '' }) {
   const { speaker, revealPercent, phase } = useGame()
+  const finePointer = useFinePointer()
+  const narrow = useIsNarrow()
   const fullyRevealed = forceFull || phase === 'reveal'
   const percent = fullyRevealed ? 100 : revealPercent
   const openPanels = openCount(percent, fullyRevealed)
 
   // Keep the face hard to recognize until the case is submitted
-  const blurPx = fullyRevealed ? 0 : Math.max(14, 32 - percent * 0.4)
+  const blurMax = narrow ? 20 : 32
+  const blurMin = narrow ? 8 : 14
+  const blurPx = fullyRevealed
+    ? 0
+    : Math.max(blurMin, blurMax - percent * (narrow ? 0.28 : 0.4))
   const brightness = fullyRevealed ? 1 : 0.5 + percent * 0.008
   const contrast = fullyRevealed ? 1 : 1.4
   const saturate = fullyRevealed ? 1 : 0.25
@@ -30,15 +37,18 @@ export default function SpeakerReveal({ forceFull = false, className = '' }) {
     : Math.min(62, 18 + openPanels * 9)
 
   return (
-    <div className={`perspective-[1200px] ${className}`}>
+    <div className={`${finePointer ? 'perspective-[1200px]' : ''} ${className}`}>
       <motion.div
-        className="card-3d relative overflow-hidden rounded-sm border border-red/40 bg-bg-secondary"
-        style={{ transformStyle: 'preserve-3d' }}
-        initial={{ rotateY: -6, rotateX: 4 }}
-        whileHover={{ rotateY: -2, rotateX: 1, y: -4 }}
+        className="card-3d relative overflow-hidden rounded-sm border border-red/40 bg-bg-secondary contain-paint"
+        style={finePointer ? { transformStyle: 'preserve-3d' } : undefined}
+        initial={finePointer ? { rotateY: -6, rotateX: 4 } : { opacity: 0.96, y: 6 }}
+        animate={finePointer ? { rotateY: -6, rotateX: 4 } : { opacity: 1, y: 0 }}
+        whileHover={
+          finePointer ? { rotateY: -2, rotateX: 1, y: -4 } : undefined
+        }
         transition={{ type: 'spring', stiffness: 120, damping: 18 }}
       >
-        <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between border-b border-border/80 bg-bg-primary/80 px-3 py-2 backdrop-blur-sm">
+        <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between border-b border-border/80 bg-bg-primary/95 px-3 py-2 md:bg-bg-primary/80 md:backdrop-blur-sm">
           <span className="text-label text-red">EVIDENCE IMAGE</span>
           <span className="text-label text-muted">
             {fullyRevealed ? 'CASE STATUS: CLOSED' : 'CASE STATUS: ACTIVE'}
@@ -59,23 +69,28 @@ export default function SpeakerReveal({ forceFull = false, className = '' }) {
                 ? undefined
                 : {
                     filter: `blur(${blurPx}px) brightness(${brightness}) contrast(${contrast}) saturate(${saturate})`,
-                    transform: 'scale(1.12)',
+                    transform: narrow ? 'scale(1.05)' : 'scale(1.12)',
                     transformOrigin: 'center center',
                   }
             }
             loading="lazy"
+            decoding="async"
           />
 
-          {/* Chunky mosaic — peeks show color blobs, not a face */}
+          {/* Mosaic overlay — CSS pattern on mobile; light backdrop blur on desktop */}
           {!fullyRevealed && (
             <div
               className="pointer-events-none absolute inset-0 z-[5]"
               style={{
-                backdropFilter: `blur(${Math.max(2, 8 - percent * 0.1)}px)`,
-                WebkitBackdropFilter: `blur(${Math.max(2, 8 - percent * 0.1)}px)`,
+                ...(narrow
+                  ? {}
+                  : {
+                      backdropFilter: `blur(${Math.max(2, 8 - percent * 0.1)}px)`,
+                      WebkitBackdropFilter: `blur(${Math.max(2, 8 - percent * 0.1)}px)`,
+                    }),
                 backgroundImage:
                   'repeating-linear-gradient(0deg, rgba(0,0,0,0.45) 0 3px, transparent 3px 10px), repeating-linear-gradient(90deg, rgba(5,5,5,0.4) 0 3px, transparent 3px 10px)',
-                opacity: 0.85,
+                opacity: narrow ? 0.9 : 0.85,
               }}
             />
           )}
@@ -113,12 +128,12 @@ export default function SpeakerReveal({ forceFull = false, className = '' }) {
 
           {!fullyRevealed && (
             <>
-              <div className="pointer-events-none absolute inset-0 z-10 scanlines opacity-50" />
+              <div className="pointer-events-none absolute inset-0 z-10 scanlines opacity-40 md:opacity-50" />
               <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-full overflow-hidden">
                 <div className="animate-scan absolute inset-x-0 h-16 bg-gradient-to-b from-transparent via-red/25 to-transparent" />
               </div>
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/35">
-                <span className="font-display text-5xl font-bold text-red/80 drop-shadow-[0_0_20px_rgba(229,9,20,0.5)] md:text-6xl">
+                <span className="font-display text-5xl font-bold text-red/80 drop-shadow-[0_0_12px_rgba(229,9,20,0.45)] md:text-6xl md:drop-shadow-[0_0_20px_rgba(229,9,20,0.5)]">
                   ?
                 </span>
                 <span className="mt-3 text-label text-white/80">IDENTITY CLASSIFIED</span>
@@ -129,7 +144,7 @@ export default function SpeakerReveal({ forceFull = false, className = '' }) {
             </>
           )}
 
-          <div className="absolute bottom-3 left-3 z-20 rounded-sm border border-red/50 bg-bg-primary/80 px-2 py-1 text-label text-red backdrop-blur-sm">
+          <div className="absolute bottom-3 left-3 z-20 rounded-sm border border-red/50 bg-bg-primary/95 px-2 py-1 text-label text-red md:bg-bg-primary/80 md:backdrop-blur-sm">
             {fullyRevealed ? speaker.name.toUpperCase() : 'SUBJECT UNKNOWN'}
           </div>
         </div>

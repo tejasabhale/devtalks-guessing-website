@@ -13,10 +13,11 @@ export default function ProgressBar({ completed, activeIndex, total }) {
 
       <div className="mb-4 h-2 overflow-hidden rounded-full bg-border">
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-red-dark via-red to-red-bright"
+          className="h-full origin-left rounded-full bg-gradient-to-r from-red-dark via-red to-red-bright"
           initial={false}
-          animate={{ width: `${percent}%` }}
+          animate={{ scaleX: Math.max(percent, 0) / 100 }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
+          style={{ width: '100%' }}
         />
       </div>
 

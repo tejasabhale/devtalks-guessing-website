@@ -30,7 +30,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-bg-primary/70 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border/80 bg-bg-primary/95 md:bg-bg-primary/70 md:backdrop-blur-md contain-paint">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-6">
         <Link
           to="/"
@@ -87,11 +87,11 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="overflow-hidden border-t border-border bg-bg-secondary lg:hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="border-t border-border bg-bg-secondary lg:hidden"
           >
             <div className="flex flex-col gap-1 px-5 py-4">
               {links.map((link) => (

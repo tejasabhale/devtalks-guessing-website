@@ -20,9 +20,13 @@ function buildWhatsAppShareUrl({ score, playerName, playerRank, isCorrectGuess }
 }
 
 function ConfettiBurst() {
+  const narrow =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(max-width: 767px)').matches
+  const count = narrow ? 14 : 36
   const pieces = useMemo(
     () =>
-      Array.from({ length: 36 }, (_, i) => ({
+      Array.from({ length: count }, (_, i) => ({
         id: i,
         left: `${4 + (i * 2.7) % 92}%`,
         delay: (i % 12) * 0.05,
@@ -31,7 +35,7 @@ function ConfettiBurst() {
         size: 4 + (i % 4) * 2,
         x: ((i * 17) % 80) - 40,
       })),
-    [],
+    [count],
   )
 
   return (
@@ -109,7 +113,7 @@ export default function FinalReveal() {
         }`}
       />
       <div
-        className={`pointer-events-none absolute left-1/2 top-10 -z-10 h-64 w-64 -translate-x-1/2 rounded-full blur-[100px] ${
+        className={`pointer-events-none absolute left-1/2 top-10 -z-10 h-40 w-40 -translate-x-1/2 rounded-full blur-[48px] md:h-64 md:w-64 md:blur-[100px] ${
           isCorrectGuess ? 'bg-red/35 animate-win-pulse' : 'bg-red-bright/40 animate-lose-flicker'
         }`}
       />
@@ -126,7 +130,9 @@ export default function FinalReveal() {
             opacity: 1,
             ...(isCorrectGuess
               ? {}
-              : { filter: ['none', 'hue-rotate(20deg)', 'none', 'contrast(1.4)', 'none'] }),
+              : {
+                  x: [0, -3, 3, -2, 2, 0],
+                }),
           }}
           transition={{ delay: 0.15, duration: isCorrectGuess ? 0.6 : 0.9 }}
           className={isCorrectGuess ? 'animate-win-reveal' : 'animate-lose-glitch'}

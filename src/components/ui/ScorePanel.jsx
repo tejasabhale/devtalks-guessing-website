@@ -20,9 +20,10 @@ export default function ScorePanel({ compact = false }) {
       <div>
         <p className="text-label text-muted">SCORE</p>
         <motion.p
-          key={score}
-          initial={{ y: -6, opacity: 0.4 }}
+          initial={false}
           animate={{ y: 0, opacity: 1 }}
+          key={score}
+          transition={{ duration: 0.25 }}
           className="font-display text-xl font-bold text-white tabular-nums md:text-2xl"
         >
           {score}

@@ -28,7 +28,7 @@ export default function SplashLoader() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-bg-primary"
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-bg-primary contain-paint"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
@@ -36,13 +36,13 @@ export default function SplashLoader() {
           aria-live="polite"
           aria-label="Loading DevTalks x DevKraft"
         >
-          <div className="pointer-events-none absolute inset-0 grid-investigation opacity-50" />
-          <div className="pointer-events-none absolute inset-0 scanlines opacity-40" />
+          <div className="pointer-events-none absolute inset-0 grid-investigation opacity-40 md:opacity-50" />
+          <div className="pointer-events-none absolute inset-0 scanlines opacity-30 md:opacity-40" />
           <div className="noise-overlay absolute inset-0" />
 
           <motion.div
-            className="absolute left-1/2 top-1/2 h-[50vmin] w-[50vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(229,9,20,0.28)_0%,transparent_68%)] blur-3xl"
-            animate={{ opacity: [0.35, 0.65, 0.35], scale: [0.92, 1.08, 0.92] }}
+            className="gpu-layer absolute left-1/2 top-1/2 h-[40vmin] w-[40vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(229,9,20,0.28)_0%,transparent_68%)] blur-xl md:h-[50vmin] md:w-[50vmin] md:blur-3xl"
+            animate={{ opacity: [0.35, 0.65, 0.35] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           />
 

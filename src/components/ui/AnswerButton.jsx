@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useFinePointer } from '../../hooks/useFinePointer'
 
 export default function AnswerButton({
   label,
@@ -8,6 +9,7 @@ export default function AnswerButton({
   disabled,
   onClick,
 }) {
+  const finePointer = useFinePointer()
   let stateClass =
     'border-border bg-bg-secondary text-white hover:border-red/60 hover:bg-card'
 
@@ -22,7 +24,9 @@ export default function AnswerButton({
   return (
     <motion.button
       type="button"
-      whileHover={disabled ? undefined : { y: -2, scale: 1.01 }}
+      whileHover={
+        disabled || !finePointer ? undefined : { y: -2, scale: 1.01 }
+      }
       whileTap={disabled ? undefined : { y: 1, scale: 0.99 }}
       onClick={onClick}
       disabled={disabled}

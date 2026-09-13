@@ -31,8 +31,8 @@ export default function NameEntry() {
         className="card-3d relative w-full overflow-hidden rounded-sm border border-red/40 bg-card p-6 red-glow md:p-8"
         style={{ transformStyle: 'preserve-3d' }}
       >
-        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-red/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-red-dark/30 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-red/20 blur-xl md:blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-red-dark/30 blur-xl md:blur-3xl" />
 
         <div className="relative">
           <div className="mb-6 flex items-center justify-between">

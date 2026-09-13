@@ -36,10 +36,11 @@ export default function HintButton() {
       <AnimatePresence>
         {revealed && clue && (
           <motion.div
-            initial={{ opacity: 0, height: 0, rotateX: -8 }}
-            animate={{ opacity: 1, height: 'auto', rotateX: 0 }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden rounded-sm border border-red/40 bg-red/5 p-4 red-glow"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.25 }}
+            className="rounded-sm border border-red/40 bg-red/5 p-4 red-glow"
           >
             <p className="text-label text-red mb-2">CONFIDENTIAL TIP</p>
             <p className="text-sm leading-relaxed text-white/90">{clue.hint}</p>
