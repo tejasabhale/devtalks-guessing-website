@@ -370,11 +370,14 @@
     }
 
     .card-3d {
-      transform-style: flat;
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.03),
         0 8px 24px rgba(0, 0, 0, 0.45),
         inset 0 0 0 1px rgba(37, 37, 37, 1);
+    }
+
+    .card-3d-motion {
+      transform-style: preserve-3d;
     }
 
     .animate-scan {

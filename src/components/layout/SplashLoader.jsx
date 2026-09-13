@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-const DISPLAY_MS = 2400
+const DISPLAY_MS = 2600
 
 export default function SplashLoader() {
   const [visible, setVisible] = useState(true)
@@ -30,7 +30,7 @@ export default function SplashLoader() {
         <motion.div
           className="fixed inset-0 z-[100] flex min-h-[100dvh] w-full items-center justify-center overflow-hidden bg-bg-primary contain-paint"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           role="status"
           aria-live="polite"
@@ -58,7 +58,7 @@ export default function SplashLoader() {
             <div className="animate-scan absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-red/15 via-red/5 to-transparent" />
           </div>
 
-          <div className="relative z-10 flex w-full max-w-[min(100%,22rem)] flex-col items-center px-5 text-center sm:max-w-none sm:px-6">
+          <div className="relative z-10 flex w-full max-w-[min(100%,22rem)] flex-col items-center px-5 text-center sm:max-w-xl sm:px-6">
             <motion.p
               className="text-label text-muted"
               initial={{ opacity: 0, y: 8 }}
@@ -68,55 +68,60 @@ export default function SplashLoader() {
               CASE FILE · INIT
             </motion.p>
 
-            <motion.h1
-              className="mt-5 flex w-full flex-col items-center gap-2 font-display text-[1.65rem] font-bold leading-none tracking-[0.06em] text-white sm:mt-5 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-0 sm:text-4xl sm:tracking-[0.08em] md:text-5xl"
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <span className="inline-block whitespace-nowrap">
+            <h1 className="mt-5 flex w-full flex-col items-center gap-2.5 font-display text-[1.65rem] font-bold leading-none tracking-[0.06em] text-white sm:mt-6 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-0 sm:text-4xl sm:tracking-[0.08em] md:text-5xl">
+              <motion.span
+                className="inline-block whitespace-nowrap"
+                initial={{ opacity: 0, y: 16, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              >
                 DEV
                 <span className="text-red">TALKS</span>
-              </span>
+              </motion.span>
               <motion.span
                 className="inline-block font-display text-xl font-semibold tracking-[0.2em] text-muted sm:mx-3 sm:text-2xl md:mx-4 md:text-3xl"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.35 }}
+                initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 0.45, delay: 0.32, type: 'spring', stiffness: 220, damping: 16 }}
                 aria-hidden="true"
               >
                 ×
               </motion.span>
-              <span className="inline-block whitespace-nowrap">
+              <motion.span
+                className="inline-block whitespace-nowrap"
+                initial={{ opacity: 0, y: 16, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+              >
                 DEV
                 <span className="text-red">KRAFT</span>
-              </span>
-            </motion.h1>
+              </motion.span>
+            </h1>
 
             <motion.div
               className="mt-7 h-px w-[min(10rem,55vw)] overflow-hidden bg-border sm:mt-8 sm:w-56"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.5, delay: 0.45 }}
+              transition={{ duration: 0.5, delay: 0.55 }}
             >
               <motion.div
                 className="h-full w-1/2 bg-gradient-to-r from-transparent via-red-bright to-transparent"
                 animate={{ x: ['-100%', '200%'] }}
-                transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut', delay: 0.7 }}
               />
             </motion.div>
 
             <motion.div
-              className="mt-5 flex items-center gap-2 sm:mt-6"
+              className="mt-5 flex items-center gap-2.5 sm:mt-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.55 }}
+              transition={{ delay: 0.65 }}
             >
               {[0, 1, 2].map((i) => (
                 <motion.span
                   key={i}
                   className="h-1.5 w-1.5 rounded-full bg-red"
-                  animate={{ opacity: [0.25, 1, 0.25], scale: [0.85, 1.15, 0.85] }}
+                  animate={{ opacity: [0.25, 1, 0.25], scale: [0.85, 1.2, 0.85] }}
                   transition={{
                     duration: 1.1,
                     repeat: Infinity,

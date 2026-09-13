@@ -6,7 +6,6 @@ import SpeakerReveal from '../components/game/SpeakerReveal'
 import ProgressBar from '../components/ui/ProgressBar'
 import ClueCard from '../components/game/ClueCard'
 import HintButton from '../components/ui/HintButton'
-import ScorePanel from '../components/ui/ScorePanel'
 import FinalGuess from '../components/game/FinalGuess'
 import FinalReveal from '../components/game/FinalReveal'
 
@@ -87,17 +86,7 @@ export default function GuessPage() {
                 />
               </div>
               <ClueCard />
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start lg:hidden">
-                <div className="sm:w-40">
-                  <ScorePanel />
-                </div>
-                <div className="flex-1">
-                  <HintButton />
-                </div>
-              </div>
-              <div className="hidden lg:block">
-                <HintButton />
-              </div>
+              <HintButton />
             </div>
           </div>
         )}

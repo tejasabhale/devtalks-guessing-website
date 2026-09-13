@@ -37,12 +37,12 @@ export default function SpeakerReveal({ forceFull = false, className = '' }) {
     : Math.min(62, 18 + openPanels * 9)
 
   return (
-    <div className={`${finePointer ? 'perspective-[1200px]' : ''} ${className}`}>
+    <div className={`perspective-[1000px] ${className}`}>
       <motion.div
-        className="card-3d relative overflow-hidden rounded-sm border border-red/40 bg-bg-secondary contain-paint"
-        style={finePointer ? { transformStyle: 'preserve-3d' } : undefined}
-        initial={finePointer ? { rotateY: -6, rotateX: 4 } : { opacity: 0.96, y: 6 }}
-        animate={finePointer ? { rotateY: -6, rotateX: 4 } : { opacity: 1, y: 0 }}
+        className="card-3d card-3d-motion relative overflow-hidden rounded-sm border border-red/40 bg-bg-secondary contain-paint"
+        style={{ transformStyle: 'preserve-3d' }}
+        initial={{ opacity: 0, y: 12, rotateY: narrow ? -3 : -6, rotateX: narrow ? 2 : 4 }}
+        animate={{ opacity: 1, y: 0, rotateY: narrow ? -3 : -6, rotateX: narrow ? 2 : 4 }}
         whileHover={
           finePointer ? { rotateY: -2, rotateX: 1, y: -4 } : undefined
         }
@@ -50,8 +50,11 @@ export default function SpeakerReveal({ forceFull = false, className = '' }) {
       >
         <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between border-b border-border/80 bg-bg-primary/95 px-3 py-2 md:bg-bg-primary/80 md:backdrop-blur-sm">
           <span className="text-label text-red">EVIDENCE IMAGE</span>
-          <span className="text-label text-muted">
-            {fullyRevealed ? 'CASE STATUS: CLOSED' : 'CASE STATUS: ACTIVE'}
+          <span className="shrink-0 text-label text-muted">
+            <span className="sm:hidden">{fullyRevealed ? 'CLOSED' : 'ACTIVE'}</span>
+            <span className="hidden sm:inline">
+              {fullyRevealed ? 'CASE STATUS: CLOSED' : 'CASE STATUS: ACTIVE'}
+            </span>
           </span>
         </div>
 

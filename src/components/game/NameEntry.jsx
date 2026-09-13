@@ -28,8 +28,8 @@ export default function NameEntry() {
         initial={{ opacity: 0, y: 24, rotateX: 8 }}
         animate={{ opacity: 1, y: 0, rotateX: 0 }}
         transition={{ duration: 0.5 }}
-        className="card-3d relative w-full overflow-hidden rounded-sm border border-red/40 bg-card p-6 red-glow md:p-8"
-        style={{ transformStyle: 'preserve-3d' }}
+        className="card-3d card-3d-motion relative w-full overflow-hidden rounded-sm border border-red/40 bg-card p-6 red-glow md:p-8"
+        style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
       >
         <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-red/20 blur-xl md:blur-3xl" />
         <div className="pointer-events-none absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-red-dark/30 blur-xl md:blur-3xl" />

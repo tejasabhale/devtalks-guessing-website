@@ -49,7 +49,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative overflow-hidden px-5 pb-16 pt-10 md:px-6 md:pb-24 md:pt-16">
+    <section className="relative overflow-x-clip px-5 pb-16 pt-10 md:px-6 md:pb-24 md:pt-16">
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <motion.p
@@ -108,19 +108,29 @@ export default function Hero() {
           onMouseEnter={finePointer ? cacheRect : undefined}
           onMouseMove={finePointer ? onMove : undefined}
           onMouseLeave={finePointer ? onLeave : undefined}
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          style={finePointer ? { perspective: 1200 } : undefined}
-          className="relative mx-auto w-full max-w-md lg:max-w-none"
+          style={{ perspective: 1200 }}
+          className="relative mx-auto w-full max-w-md px-1 lg:max-w-none lg:px-0"
         >
           <motion.div
             style={
               finePointer
                 ? { rotateX, rotateY, transformStyle: 'preserve-3d' }
-                : undefined
+                : { transformStyle: 'preserve-3d' }
             }
-            className="card-3d relative overflow-hidden rounded-sm border border-red/50 bg-card red-glow contain-paint"
+            animate={
+              finePointer || !tabVisible
+                ? undefined
+                : { y: [0, -5, 0] }
+            }
+            transition={
+              finePointer || !tabVisible
+                ? undefined
+                : { duration: 4.5, repeat: Infinity, ease: 'easeInOut' }
+            }
+            className="card-3d card-3d-motion relative overflow-hidden rounded-sm border border-red/50 bg-card red-glow contain-paint"
           >
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
               <span className="text-label text-red">{CASE_FILE}</span>
@@ -132,24 +142,24 @@ export default function Hero() {
               <div className="absolute inset-0 scanlines opacity-40 md:opacity-50" />
               <div className="animate-scan absolute inset-x-0 h-20 bg-gradient-to-b from-transparent via-red/30 to-transparent" />
 
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
                 <motion.span
                   animate={
                     tabVisible
-                      ? { opacity: [0.6, 1, 0.6] }
-                      : { opacity: 0.8 }
+                      ? { opacity: [0.6, 1, 0.6], scale: [1, 1.04, 1] }
+                      : { opacity: 0.8, scale: 1 }
                   }
                   transition={
                     tabVisible
                       ? { duration: 3, repeat: Infinity }
                       : { duration: 0.2 }
                   }
-                  className="font-display text-7xl font-bold text-red md:text-8xl"
+                  className="font-display text-6xl font-bold text-red sm:text-7xl md:text-8xl"
                 >
                   ?
                 </motion.span>
                 <p className="mt-4 text-label text-white">MYSTERY SPEAKER</p>
-                <p className="mt-2 text-label text-muted">
+                <p className="mt-2 text-center text-label text-muted">
                   IDENTITY: CLASSIFIED
                 </p>
               </div>
@@ -169,31 +179,28 @@ export default function Hero() {
             </div>
           </motion.div>
 
+          {/* Floating chips — inset on mobile so they never collide or clip */}
           <motion.div
-            animate={
-              tabVisible ? { y: [0, -8, 0] } : { y: 0 }
-            }
+            animate={tabVisible ? { y: [0, -6, 0] } : { y: 0 }}
             transition={
               tabVisible
                 ? { duration: 5, repeat: Infinity, ease: 'easeInOut' }
                 : { duration: 0.2 }
             }
-            className="absolute -left-4 top-16 hidden rounded-sm border border-border bg-card/90 px-3 py-2 text-label text-muted shadow-xl md:block"
-            style={{ transform: 'rotate(-6deg)' }}
+            className="pointer-events-none absolute left-2 top-12 z-10 rounded-sm border border-border bg-card/95 px-2.5 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-muted uppercase shadow-lg sm:left-0 sm:top-16 sm:px-3 sm:py-2 sm:text-label md:-left-4"
+            style={{ rotate: -6 }}
           >
             EVIDENCE
           </motion.div>
           <motion.div
-            animate={
-              tabVisible ? { y: [0, 6, 0] } : { y: 0 }
-            }
+            animate={tabVisible ? { y: [0, 5, 0] } : { y: 0 }}
             transition={
               tabVisible
                 ? { duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }
                 : { duration: 0.2 }
             }
-            className="absolute -right-3 bottom-24 hidden rounded-sm border border-red/30 bg-bg-secondary px-3 py-2 text-label text-red shadow-xl md:block"
-            style={{ transform: 'rotate(5deg)' }}
+            className="pointer-events-none absolute right-2 bottom-20 z-10 rounded-sm border border-red/30 bg-bg-secondary/95 px-2.5 py-1.5 text-[10px] font-semibold tracking-[0.18em] text-red uppercase shadow-lg sm:right-0 sm:bottom-24 sm:px-3 sm:py-2 sm:text-label md:-right-3"
+            style={{ rotate: 5 }}
           >
             CLASSIFIED
           </motion.div>
