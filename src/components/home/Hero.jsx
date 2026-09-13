@@ -1,0 +1,168 @@
+import { Link, useNavigate } from 'react-router-dom'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useRef } from 'react'
+import { useGame } from '../../context/GameContext'
+import { CASE_FILE } from '../../data/speakers'
+
+export default function Hero() {
+  const navigate = useNavigate()
+  const { openNameEntry } = useGame()
+  const frameRef = useRef(null)
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), {
+    stiffness: 120,
+    damping: 18,
+  })
+  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), {
+    stiffness: 120,
+    damping: 18,
+  })
+
+  const onMove = (e) => {
+    const el = frameRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    mx.set((e.clientX - rect.left) / rect.width - 0.5)
+    my.set((e.clientY - rect.top) / rect.height - 0.5)
+  }
+
+  const onLeave = () => {
+    mx.set(0)
+    my.set(0)
+  }
+
+  const start = () => {
+    openNameEntry()
+    navigate('/guess')
+  }
+
+  return (
+    <section className="relative overflow-hidden px-5 pb-16 pt-10 md:px-6 md:pb-24 md:pt-16">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-label text-red"
+          >
+            DEVTALKS · DYPIT
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+          >
+            CAN YOU
+            <br />
+            <span className="text-red">GUESS THE SPEAKER?</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-6 max-w-md text-base leading-relaxed text-muted md:text-lg"
+          >
+            Five clues. One mystery speaker. Can you identify them before the
+            evidence runs out?
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-8 flex flex-col gap-3 sm:flex-row"
+          >
+            <button
+              type="button"
+              onClick={start}
+              className="btn-3d min-h-12 rounded-sm bg-red px-6 py-3.5 text-label text-white"
+            >
+              START INVESTIGATION
+            </button>
+            <Link
+              to="/leaderboard"
+              className="btn-ghost-3d inline-flex min-h-12 items-center justify-center rounded-sm border border-border bg-bg-secondary px-6 py-3.5 text-label text-white"
+            >
+              VIEW LEADERBOARD
+            </Link>
+          </motion.div>
+        </div>
+
+        <motion.div
+          ref={frameRef}
+          onMouseMove={onMove}
+          onMouseLeave={onLeave}
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          style={{ perspective: 1200 }}
+          className="relative mx-auto w-full max-w-md lg:max-w-none"
+        >
+          <motion.div
+            style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+            className="card-3d relative overflow-hidden rounded-sm border border-red/50 bg-card red-glow"
+          >
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <span className="text-label text-red">{CASE_FILE}</span>
+              <span className="text-label text-muted">CLASSIFIED</span>
+            </div>
+
+            <div className="relative aspect-[4/5] bg-black">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(229,9,20,0.15),transparent_65%)]" />
+              <div className="absolute inset-0 scanlines opacity-50" />
+              <div className="animate-scan absolute inset-x-0 h-20 bg-gradient-to-b from-transparent via-red/30 to-transparent" />
+
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <motion.span
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="font-display text-7xl font-bold text-red md:text-8xl"
+                >
+                  ?
+                </motion.span>
+                <p className="mt-4 text-label text-white">MYSTERY SPEAKER</p>
+                <p className="mt-2 text-label text-muted">
+                  IDENTITY: CLASSIFIED
+                </p>
+              </div>
+
+              <div className="absolute left-3 top-3 rounded-sm border border-red/40 bg-bg-primary/70 px-2 py-1 text-[10px] tracking-widest text-red uppercase">
+                EVIDENCE TAG
+              </div>
+              <div className="absolute bottom-3 right-3 rounded-sm border border-border bg-bg-primary/70 px-2 py-1 text-[10px] tracking-widest text-muted uppercase">
+                REVEAL 0%
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 border-t border-border bg-bg-secondary px-4 py-3 text-[10px] tracking-wider text-muted uppercase">
+              <span>FILE OPEN</span>
+              <span className="text-center text-red">SCANNING</span>
+              <span className="text-right">DT-001</span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -left-4 top-16 hidden rounded-sm border border-border bg-card/90 px-3 py-2 text-label text-muted shadow-xl md:block"
+            style={{ transform: 'rotate(-6deg)' }}
+          >
+            EVIDENCE
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+            className="absolute -right-3 bottom-24 hidden rounded-sm border border-red/30 bg-bg-secondary px-3 py-2 text-label text-red shadow-xl md:block"
+            style={{ transform: 'rotate(5deg)' }}
+          >
+            CLASSIFIED
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}

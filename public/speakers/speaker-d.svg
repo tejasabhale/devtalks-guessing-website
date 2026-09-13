@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Speaker portrait placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#151515"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c9a07a"/>
+      <stop offset="100%" stop-color="#a87d55"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg)"/>
+  <ellipse cx="200" cy="490" rx="148" ry="92" fill="#121212"/>
+  <ellipse cx="200" cy="198" rx="86" ry="96" fill="url(#skin)"/>
+  <path d="M122 170 Q200 85 278 170 L272 155 Q200 105 128 155Z" fill="#2c2118"/>
+  <rect x="155" y="175" width="28" height="18" rx="2" fill="#1a1a1a" opacity="0.35"/>
+  <rect x="217" y="175" width="28" height="18" rx="2" fill="#1a1a1a" opacity="0.35"/>
+  <ellipse cx="169" cy="192" rx="8" ry="6" fill="#1a1a1a"/>
+  <ellipse cx="231" cy="192" rx="8" ry="6" fill="#1a1a1a"/>
+  <path d="M188 228 Q200 238 212 228" stroke="#8a6540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M115 305 Q200 275 285 305 L285 500 L115 500Z" fill="#101010"/>
+  <rect x="160" y="340" width="80" height="8" rx="2" fill="#FF3030" opacity="0.6"/>
+  <text x="200" y="470" text-anchor="middle" fill="#8E8E8E" font-family="sans-serif" font-size="14" letter-spacing="3">SUBJECT D</text>
+</svg>

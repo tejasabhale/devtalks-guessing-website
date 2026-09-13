@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Speaker portrait placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0c0c0c"/>
+      <stop offset="100%" stop-color="#1c1c1c"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b98968"/>
+      <stop offset="100%" stop-color="#966b45"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg)"/>
+  <ellipse cx="200" cy="485" rx="150" ry="100" fill="#161616"/>
+  <ellipse cx="200" cy="205" rx="90" ry="102" fill="url(#skin)"/>
+  <path d="M115 185 Q200 95 285 185 Q280 150 200 130 Q120 150 115 185Z" fill="#3d2914"/>
+  <ellipse cx="165" cy="200" rx="10" ry="8" fill="#1a1a1a"/>
+  <ellipse cx="235" cy="200" rx="10" ry="8" fill="#1a1a1a"/>
+  <path d="M185 242 Q200 255 215 242" stroke="#7a5530" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <rect x="125" y="310" width="150" height="170" rx="24" fill="#0f0f0f"/>
+  <circle cx="200" cy="350" r="18" fill="#E50914" opacity="0.7"/>
+  <text x="200" y="470" text-anchor="middle" fill="#8E8E8E" font-family="sans-serif" font-size="14" letter-spacing="3">SUBJECT C</text>
+</svg>
