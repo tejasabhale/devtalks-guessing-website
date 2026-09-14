@@ -5,10 +5,10 @@ export const CASE_FILE = 'CASE FILE #001'
 
 export const mysterySpeaker = {
   id: 'speaker-a',
-  name: 'Aarav Mehta',
-  designation: 'Founder & Product Engineer',
+  name: 'Hitesh Choudhary',
+  designation: 'Youtuber',
   category: 'Product Builder',
-  image: '/speakers/speaker-a.svg',
+  image: '/speakers/speaker-a.png',
   description:
     'Builder of developer tools and campus-first products. Known for turning student ideas into shipping products.',
   clues: [
